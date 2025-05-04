@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from "react";
 import ZNavbar from "../components/znavbar";
 import {
@@ -35,9 +36,9 @@ const carouselImage = [
 ];
 
 function Home() {
-  const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  const serviceID = process.env.EMAILJS_SERVICE_ID;
+  const templateID = process.env.EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.EMAILJS_PUBLIC_KEY;
 
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false, autoplay: true })
