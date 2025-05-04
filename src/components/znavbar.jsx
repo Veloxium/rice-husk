@@ -6,15 +6,12 @@ function ZNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="fixed top-0 z-50 w-full bg-white px-4 md:px-40 py-2 flex justify-between items-center shadow">
-      {/* Logo */}
+    <div className="fixed top-0 z-50 w-screen bg-white px-4 md:px-40 py-2 flex justify-between items-center shadow">
       <div>
         <img
           src="/logo.jpg"
           alt="Logo"
-          width={80}
-          height={80}
-          className="object-cover p-2"
+          className="object-cover p-2 w-16 md:w-20"
         />
       </div>
 

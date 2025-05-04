@@ -17,6 +17,7 @@ import {
   Send,
 } from "lucide-react";
 import { toast } from "sonner";
+import emailjs from "emailjs-com";
 
 const carouselImage = [
   {
@@ -34,6 +35,10 @@ const carouselImage = [
 ];
 
 function Home() {
+  const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false, autoplay: true })
   );
@@ -49,18 +54,31 @@ function Home() {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const message = e.target.message.value;
 
-    // Handle form submission logic here (e.g., send to server)
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Message:", message);
-
-    toast.success("Message sent successfully!", {
-      position: "top-right",
-    });
+    emailjs
+      .sendForm(
+      serviceID,
+      templateID,
+      e.target, // Pass the HTML form element directly
+      publicKey
+      )
+      .then(
+      (result) => {
+        console.log(result.text);
+        toast.success("Message sent successfully!", {
+        position: "top-right",
+        });
+      },
+      (error) => {
+        console.error(error.text);
+        toast.error("Failed to send message", {
+        position: "top-right",
+        });
+      }
+      );
+    if (e.target instanceof HTMLFormElement) {
+      e.target.reset();
+    }
   };
 
   return (
@@ -70,7 +88,7 @@ function Home() {
         id="home"
         className="relative flex flex-col items-start justify-center min-h-screen overflow-hidden"
       >
-        <div className="absolute -z-10 w-full h-full bg-black opacity-40"></div>
+        <div className="absolute -z-10 w-full h-full bg-black opacity-60"></div>
         <Carousel
           className={"absolute w-full h-screen -z-20"}
           plugins={[plugin.current]}
@@ -279,7 +297,7 @@ function Home() {
       </section>
       <section className="relative flex flex-col items-center justify-start h-full">
         <div id="contact" className="w-0 h-0 absolute -top-16" />
-        <div className="absolute -z-10 w-full h-full bg-black opacity-50"></div>
+        <div className="absolute -z-10 w-full h-full bg-black opacity-70"></div>
         <div className="absolute -z-20 w-full h-full">
           <img
             src={"/p4.jpg"}
@@ -288,10 +306,12 @@ function Home() {
           />
         </div>
         <div className="py-10 px-4 md:py-20 md:px-40 text-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-2 w-full text-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 w-full text-center">
             <div className="flex flex-col items-start text-left">
-              <p className="text-4xl font-semibold">Contact Us</p>
-              <p className="text-lg mt-4">
+              <p className="text-4xl font-semibold px-2 bg-zprimary text-black">
+                Contact Us
+              </p>
+              <p className="text-lg font-semibold mt-4">
                 Interested in working with us or requesting a price quote?
                 Please reach out to us through the following contact:
               </p>
@@ -299,7 +319,7 @@ function Home() {
                 <MapPin />
                 Address
               </p>
-              <p className="text-lg">
+              <p className="text-lg font-semibold">
                 Tapir Raya Street, RT 001 / RW 001, Mongal Hamlet, <br />
                 Tapir Village, Seteluk District, <br />
                 West Sumbawa Regency, West Nusa Tenggara, Indonesia – 84455
@@ -313,7 +333,7 @@ function Home() {
                 className="relative group mt-1"
               >
                 <div className="absolute bg-zprimary h-full w-1 group-hover:w-full -z-10 transition-all duration-300" />
-                <p className="py-1 px-2 text-lg group-hover:text-black transition-all duration-300">
+                <p className="font-semibold py-1 px-2 text-lg group-hover:text-black transition-all duration-300">
                   (+62)812-3903-0424
                 </p>
               </button>
@@ -328,7 +348,7 @@ function Home() {
                 className="relative group mt-1"
               >
                 <div className="absolute bg-zprimary h-full w-1 group-hover:w-full -z-10 transition-all duration-300" />
-                <p className="py-1 px-2 text-lg group-hover:text-black transition-all duration-300">
+                <p className="font-semibold flex break-all text-left py-1 px-2 text-lg group-hover:text-black transition-all duration-300">
                   westnusatenggararicehusksuppli@gmail.com
                 </p>
               </button>
@@ -343,13 +363,14 @@ function Home() {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-white"
+                  className="block text-lg font-medium text-white"
                 >
                   Name
                 </label>
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   placeholder="Insert your name"
                   className="mt-1 w-full border border-gray-300 rounded bg-white text-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-zprimary"
                   required
@@ -359,35 +380,35 @@ function Home() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-white"
+                  className="block text-lg font-medium text-white"
                 >
                   Email
                 </label>
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   placeholder="Insert your email"
                   className="mt-1 w-full border border-gray-300 rounded bg-white text-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-zprimary"
                   required
                 />
               </div>
-
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium text-white"
+                  className="block text-lg font-medium text-white"
                 >
                   Message
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   placeholder="Insert your message"
                   rows={4}
                   className="mt-1 w-full border border-gray-300 rounded bg-white text-black px-3 py-2 focus:outline-none focus:ring-2 focus:ring-zprimary"
                   required
                 ></textarea>
               </div>
-
               <button
                 type="submit"
                 className="flex gap-2 w-full items-center justify-center rounded bg-zprimary px-4 py-2 mt-4 border-2 border-zprimary hover:bg-transparent hover:text-white transition duration-300 group"
@@ -401,6 +422,30 @@ function Home() {
           </div>
         </div>
       </section>
+      <footer className="bg-white grid grid-cols-1 md:grid-cols-2 px-4 py-10 md:px-40 md:py-20 gap-x-6 gap-y-4">
+        <div className="flex flex-col justify-center items-center">
+          <img src="/logo.jpg" alt="logo" className="w-60" />
+          <p className="text-center md:text-lg mt-4 max-w-lg">
+            High-quality rice husk sourced directly from West Nusa Tenggara,
+            Indonesia. Processed with clean standards and ready for
+            international markets.
+          </p>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <h3 className="font-semibold text-lg md:text-2xl">
+            Let's Get In Touch
+          </h3>
+          <p className="text-center">
+            Let’s collaborate to create solutions that meet your needs.
+          </p>
+        </div>
+      </footer>
+      <div className="py-6 bg-zprimary flex flex-col justify-center items-center">
+        <p className="text-sm text-center">
+          &copy; {new Date().getFullYear()} West Nusa Tenggara Rice Husk. All
+          rights reserved.
+        </p>
+      </div>
     </div>
   );
 }
