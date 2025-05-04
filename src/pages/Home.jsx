@@ -36,10 +36,6 @@ const carouselImage = [
 ];
 
 function Home() {
-  const serviceID = process.env.EMAILJS_SERVICE_ID;
-  const templateID = process.env.EMAILJS_TEMPLATE_ID;
-  const publicKey = process.env.EMAILJS_PUBLIC_KEY;
-
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false, autoplay: true })
   );
@@ -53,29 +49,32 @@ function Home() {
     });
   };
 
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     emailjs
       .sendForm(
-      serviceID,
-      templateID,
-      e.target, // Pass the HTML form element directly
-      publicKey
+        serviceID,
+        templateID,
+        e.target, // Pass the HTML form element directly
+        publicKey
       )
       .then(
-      (result) => {
-        console.log(result.text);
-        toast.success("Message sent successfully!", {
-        position: "top-right",
-        });
-      },
-      (error) => {
-        console.error(error.text);
-        toast.error("Failed to send message", {
-        position: "top-right",
-        });
-      }
+        (result) => {
+          console.log(result.text);
+          toast.success("Message sent successfully!", {
+            position: "top-right",
+          });
+        },
+        (error) => {
+          console.error(error.text);
+          toast.error("Failed to send message", {
+            position: "top-right",
+          });
+        }
       );
     if (e.target instanceof HTMLFormElement) {
       e.target.reset();
