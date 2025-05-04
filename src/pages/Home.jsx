@@ -35,9 +35,9 @@ const carouselImage = [
 ];
 
 function Home() {
-  const serviceID = import.meta.env.EMAILJS_SERVICE_ID;
-  const templateID = import.meta.env.EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.EMAILJS_PUBLIC_KEY;
+  const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false, autoplay: true })
@@ -54,7 +54,7 @@ function Home() {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log(serviceID, templateID, publicKey);
+
     emailjs
       .sendForm(
       serviceID,
