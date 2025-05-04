@@ -54,7 +54,7 @@ function Home() {
 
   const sendMessage = (e) => {
     e.preventDefault();
-
+    console.log(serviceID, templateID, publicKey);
     emailjs
       .sendForm(
       serviceID,
